@@ -108,7 +108,17 @@ export class TetrisComponent {
   }
 
   rotate() {
-
+    let ind = this.activeBlock.currentSequenceNumber;
+    this.activeBlock.boardPosition.forEach((unitPosition, index) => {
+      let currentSequence = this.activeBlock.rotationSequence[ind];
+      unitPosition[0] = unitPosition[0] + currentSequence[index][0];
+      unitPosition[1] = unitPosition[1] + currentSequence[index][1];
+    })
+    if (ind === this.activeBlock.rotationSequence.length -1) {
+      this.activeBlock.currentSequenceNumber = 0;
+    } else {
+      this.activeBlock.currentSequenceNumber++;
+    }
   }
 
   restart() {
@@ -133,6 +143,9 @@ export class TetrisComponent {
         break;
       case 'ArrowDown':
         this.moveDown();
+        break;
+      case 'ArrowUp':
+        this.rotate();
         break;
       case 'Space':
         this.rotate();
