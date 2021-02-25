@@ -1,0 +1,25 @@
+.board-grid {
+  height: 600px;
+  width: 300px;
+  border: 1px solid grey;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.unit {
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  font-size: 12px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.square {
+  background: lightcoral;
+}
