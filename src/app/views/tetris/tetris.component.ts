@@ -1,4 +1,4 @@
-import { BLOCK_OPTIONS, TetBlock } from './block-models';
+import { BLOCK_OPTIONS, BlockModel, TetSequenceController } from './block-models';
 import { Component, HostListener, OnInit } from '@angular/core';
 
 import { KeyboardService } from './../../services/keyboard.service';
@@ -16,12 +16,12 @@ export class TetrisComponent {
     private tetrisService: TetrisService,
     private keyboardService: KeyboardService,
   ) { }
-  blockId = 0;
   width = 10;
   height = 20;
   board = this.getBoard(this.width, this.height);
 
-  activeBlock = new TetBlock(this.blockId++);
+  sequenceController = new TetSequenceController();
+  activeBlock = this.sequenceController.next();
 
   tick$: Observable<any>
 
@@ -65,7 +65,7 @@ export class TetrisComponent {
     if (cantMove) {
       this.archiveBlock(this.activeBlock);
 
-      this.activeBlock = new TetBlock(this.blockId++);
+      this.activeBlock = this.sequenceController.next();
       return;
     }
     this.activeBlock.boardPosition.forEach(unit => {
@@ -108,13 +108,13 @@ export class TetrisComponent {
   }
 
   rotate() {
-    let ind = this.activeBlock.currentSequenceNumber;
+    let currentSequenceInd = this.activeBlock.currentSequenceNumber;
     this.activeBlock.boardPosition.forEach((unitPosition, index) => {
-      let currentSequence = this.activeBlock.rotationSequence[ind];
+      let currentSequence = this.activeBlock.rotationSequence[currentSequenceInd];
       unitPosition[0] = unitPosition[0] + currentSequence[index][0];
       unitPosition[1] = unitPosition[1] + currentSequence[index][1];
     })
-    if (ind === this.activeBlock.rotationSequence.length -1) {
+    if (currentSequenceInd === this.activeBlock.rotationSequence.length -1) {
       this.activeBlock.currentSequenceNumber = 0;
     } else {
       this.activeBlock.currentSequenceNumber++;
@@ -127,7 +127,7 @@ export class TetrisComponent {
     this.tick$.subscribe(_ => this.moveDown())
   }
 
-  archiveBlock(block: TetBlock) {
+  archiveBlock(block: BlockModel) {
     block.boardPosition.forEach(coordinates => {
       this.board[coordinates[0]][coordinates[1]] = block.color;
     })

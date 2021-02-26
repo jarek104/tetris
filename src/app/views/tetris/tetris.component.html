@@ -1,9 +1,9 @@
-<button (click)="restart()">start</button>
-{{tick$ | async}}
-<div class="board-grid">
-  <div *ngFor="let y of board; let yIndex = index" class="row">
-    <div *ngFor="let x of y; let xIndex = index" class="unit" [style.backgroundColor]="getBackground(yIndex, xIndex, x)"></div>
+<div>
+  <button (click)="restart()">start</button>
+  {{tick$ | async}}
+  <div class="board-grid">
+    <div *ngFor="let y of board; let yIndex = index" class="row">
+      <div *ngFor="let x of y; let xIndex = index" class="unit" [style.backgroundColor]="getBackground(yIndex, xIndex, x)"></div>
+    </div>
   </div>
 </div>
-
-<!-- {{activeBlock | json}} -->
