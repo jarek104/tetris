@@ -1,9 +1,17 @@
 <div>
   <button (click)="restart()">start</button>
+  <button (click)="increaseWidth()">+ Width</button>
+  <button (click)="decreaseWidth()">- Width</button>
+  <button (click)="increaseHeight()">+ Height</button>
+  <button (click)="decreaseHeight()">- Height</button>
   {{tick$ | async}}
   <div class="board-grid">
     <div *ngFor="let y of board; let yIndex = index" class="row">
-      <div *ngFor="let x of y; let xIndex = index" class="unit" [style.backgroundColor]="getBackground(yIndex, xIndex, x)"></div>
+      <div *ngFor="let x of y; let xIndex = index" class="unit"
+        [style.backgroundColor]="getBackground(yIndex, xIndex, x)"
+        [style.width.px]="blockWidth"
+        [style.height.px]="blockHeight"
+      ></div>
     </div>
   </div>
 </div>

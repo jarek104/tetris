@@ -16,7 +16,9 @@ export class TetrisComponent {
     private tetrisService: TetrisService,
     private keyboardService: KeyboardService,
   ) { }
-  width = 5;
+  blockWidth = 20;
+  blockHeight = 20;
+  width = 50;
   height = 20;
   board = this.getBoard(this.width, this.height);
 
@@ -170,5 +172,21 @@ export class TetrisComponent {
       default:
         break;
     }
+  }
+
+  increaseWidth() {
+    this.blockWidth = this.blockWidth + 5;
+  }
+
+  decreaseWidth() {
+    this.blockWidth = this.blockWidth > 5 ? this.blockWidth - 5 : this.blockWidth;
+  }
+
+  increaseHeight() {
+    this.blockHeight = this.blockHeight + 5;
+  }
+
+  decreaseHeight() {
+    this.blockHeight = this.blockHeight > 5 ? this.blockHeight - 5 : this.blockHeight;
   }
 }
