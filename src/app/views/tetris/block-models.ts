@@ -137,14 +137,10 @@ export class TetSequenceController {
   }
 
   next() {
-    if (this.sequence.length > 0) {
-      console.log(this.sequence.length);
-
-      return this.sequence.pop();
-    } else {
+    if (this.sequence.length === 0) {
       this.newSequence();
-      return this.sequence.pop();
     }
+    return this.sequence.pop();
   }
 
   private newSequence() {

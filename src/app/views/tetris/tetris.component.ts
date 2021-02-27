@@ -1,6 +1,6 @@
-import { BLOCK_OPTIONS, BlockModel, TetSequenceController } from './block-models';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { BlockModel, TetSequenceController } from './block-models';
 
+import { Component } from '@angular/core';
 import { KeyboardService } from './../../services/keyboard.service';
 import { Observable } from 'rxjs';
 import { TetrisService } from './../../services/tetris.service';
@@ -16,7 +16,7 @@ export class TetrisComponent {
     private tetrisService: TetrisService,
     private keyboardService: KeyboardService,
   ) { }
-  width = 10;
+  width = 5;
   height = 20;
   board = this.getBoard(this.width, this.height);
 
@@ -64,6 +64,7 @@ export class TetrisComponent {
 
     if (cantMove) {
       this.archiveBlock(this.activeBlock);
+      this.evaluateRows();
 
       this.activeBlock = this.sequenceController.next();
       return;
@@ -119,6 +120,21 @@ export class TetrisComponent {
     } else {
       this.activeBlock.currentSequenceNumber++;
     }
+  }
+
+  evaluateRows() {
+    const rowIndexesToRemove = [];
+    this.board.forEach((row: any[], index) => {
+      const rowNotReady = row.includes(undefined);
+      if (!rowNotReady) {
+        rowIndexesToRemove.push(index);
+      }
+    })
+    rowIndexesToRemove.forEach(index => {
+      this.board.splice(index, 1);
+      this.board.unshift(new Array(this.width));
+    });
+
   }
 
   restart() {

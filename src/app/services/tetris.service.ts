@@ -12,8 +12,6 @@ export class TetrisService {
   tick$ = of(0);
 
   restart() {
-    console.log('hi');
-
     this.tick$ = of(0)
     this.tick$ = interval(1000)
   }
