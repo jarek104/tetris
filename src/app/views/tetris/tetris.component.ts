@@ -23,6 +23,7 @@ export class TetrisComponent {
   boardWidth = 8;
   boardHeight = 10;
   board = [];
+  gameOver = false;
 
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
@@ -58,16 +59,24 @@ export class TetrisComponent {
       return isProhibited;
     })
 
-    if (cantMove) {
+    if (cantMove && !this.gameOver) {
       this.archiveBlock(this.activeBlock);
       this.evaluateRows();
 
       this.activeBlock = this.sequenceController.next();
-      return;
+      this.gameOver = this.isGameOver(this.activeBlock)
+
+    } else if (!this.gameOver) {
+      this.activeBlock.boardPosition.forEach(unit => {
+        unit[0]++;
+      })
     }
-    this.activeBlock.boardPosition.forEach(unit => {
-      unit[0]++;
-    })
+  }
+
+  isGameOver(block: BlockModel) {
+    return block.boardPosition.some(unit => {
+      return this.board[unit[0]][unit[1]];
+    });
   }
 
   moveRight(){
@@ -79,7 +88,7 @@ export class TetrisComponent {
       }
       return isProhibited;
     })
-    if (cantMove) {
+    if (cantMove || this.gameOver) {
       return;
     }
     this.activeBlock.boardPosition.forEach(unit => {
@@ -96,7 +105,7 @@ export class TetrisComponent {
       }
       return isProhibited;
     })
-    if (cantMove) {
+    if (cantMove || this.gameOver) {
       return;
     }
     this.activeBlock.boardPosition.forEach(unit => {
@@ -105,6 +114,10 @@ export class TetrisComponent {
   }
 
   rotate() {
+    if (this.gameOver) {
+      return;
+    }
+
     let currentSequenceInd = this.activeBlock.currentSequenceNumber;
     this.activeBlock.boardPosition.forEach((unitPosition, index) => {
       let currentSequence = this.activeBlock.rotationSequence[currentSequenceInd];

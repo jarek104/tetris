@@ -6,7 +6,6 @@ export interface BlockModel {
   active?: boolean,
 }
 
-
 const O: BlockModel = {
   color: '#F4F1DE',
   active: true,
@@ -112,23 +111,6 @@ function copySequence(): BlockModel[] {
   return all;
 }
 
-// export class TetBlock implements BlockModel {
-//   color = '';
-//   active = true;
-//   boardPosition = [];
-//   rotationSequence = [];
-//   currentSequenceNumber = 0;
-
-//   constructor() {
-//     const ind: number = Math.floor(Math.random() * Math.floor(BLOCK_OPTIONS.length));
-//     const block = BLOCK_OPTIONS[ind];
-
-//     this.color = block.color;
-//     this.boardPosition = [...block.boardPosition.map((els: []) => [...els])];
-//     this.rotationSequence = [...block.rotationSequence.map((els: []) => [...els])];
-//   }
-
-// }
 export class TetSequenceController {
   sequence = [];
 
@@ -136,7 +118,7 @@ export class TetSequenceController {
     this.newSequence();
   }
 
-  next() {
+  next(): BlockModel {
     if (this.sequence.length === 0) {
       this.newSequence();
     }

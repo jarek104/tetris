@@ -1,6 +1,7 @@
 <div>
   <button (click)="restart()">start</button>
   <span>Score: {{score}}</span>
+  <span>Game Over: {{gameOver}}</span>
   {{tick$ | async}}
   <div class="board-grid">
     <div *ngFor="let y of board; let yIndex = index" class="row">
