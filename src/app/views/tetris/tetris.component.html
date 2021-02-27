@@ -1,9 +1,6 @@
 <div>
   <button (click)="restart()">start</button>
-  <button (click)="increaseWidth()">+ Width</button>
-  <button (click)="decreaseWidth()">- Width</button>
-  <button (click)="increaseHeight()">+ Height</button>
-  <button (click)="decreaseHeight()">- Height</button>
+  <span>Score: {{score}}</span>
   {{tick$ | async}}
   <div class="board-grid">
     <div *ngFor="let y of board; let yIndex = index" class="row">
@@ -12,6 +9,24 @@
         [style.width.px]="blockWidth"
         [style.height.px]="blockHeight"
       ></div>
+    </div>
+  </div>
+  <div class="block-controls">
+    <div class="block-control-unit">
+      <div>Block Width</div>
+      <div>
+        <button (click)="increaseWidth()">+</button>
+        <span>{{blockWidth}}px</span>
+        <button (click)="decreaseWidth()">-</button>
+      </div>
+    </div>
+    <div class="block-control-unit">
+      <div>Block Height</div>
+      <div>
+        <button (click)="increaseHeight()">+</button>
+        <span>{{blockHeight}}px</span>
+        <button (click)="decreaseHeight()">-</button>
+      </div>
     </div>
   </div>
 </div>

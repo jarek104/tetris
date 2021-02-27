@@ -15,4 +15,14 @@ export class TetrisService {
     this.tick$ = of(0)
     this.tick$ = interval(1000)
   }
+
+  buildBoard(width: number, height: number) {
+    let x = new Array(height);
+
+    for (var i = 0; i < x.length; i++) {
+      x[i] = new Array(width);
+    }
+    return x;
+  }
+
 }

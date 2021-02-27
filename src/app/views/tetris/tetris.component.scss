@@ -15,7 +15,6 @@
 .unit {
   box-sizing: border-box;
   border: 1px solid white;
-  font-size: 12px;
 }
 
 .row {
@@ -25,4 +24,16 @@
 
 .square {
   background: lightcoral;
+}
+
+.block-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.block-control-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

@@ -16,11 +16,13 @@ export class TetrisComponent {
     private tetrisService: TetrisService,
     private keyboardService: KeyboardService,
   ) { }
+
   blockWidth = 20;
   blockHeight = 20;
-  width = 50;
-  height = 20;
-  board = this.getBoard(this.width, this.height);
+  score = 0;
+  boardWidth = 8;
+  boardHeight = 10;
+  board = [];
 
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
@@ -29,15 +31,7 @@ export class TetrisComponent {
 
   ngOnInit() {
     this.keyboardService.keyboardEvent$.subscribe(eventCode => this.handleKeyboardEvent(eventCode));
-  }
-
-  getBoard(width: number, height: number) {
-    let x = new Array(height);
-
-    for (var i = 0; i < x.length; i++) {
-      x[i] = new Array(width);
-    }
-    return x;
+    this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
   }
 
   getBackground(yIndex: number, xIndex: number, currentValue: string): string {
@@ -56,7 +50,7 @@ export class TetrisComponent {
 
   moveDown() {
     const cantMove = this.activeBlock.boardPosition.some(unitPosition => {
-      let isProhibited = unitPosition[0] === this.height - 1;
+      let isProhibited = unitPosition[0] === this.boardHeight - 1;
       if (!isProhibited) {
         let nextMoveIndex = unitPosition[0] + 1;
         isProhibited = this.board[nextMoveIndex][unitPosition[1]] !== undefined;
@@ -78,7 +72,7 @@ export class TetrisComponent {
 
   moveRight(){
     const cantMove = this.activeBlock.boardPosition.some(unitPosition => {
-      let isProhibited = unitPosition[1] === this.width - 1;
+      let isProhibited = unitPosition[1] === this.boardWidth - 1;
       if (!isProhibited) {
         let nextMoveIndex = unitPosition[1] + 1;
         isProhibited = this.board[unitPosition[0]][nextMoveIndex] !== undefined;
@@ -134,7 +128,8 @@ export class TetrisComponent {
     })
     rowIndexesToRemove.forEach(index => {
       this.board.splice(index, 1);
-      this.board.unshift(new Array(this.width));
+      this.board.unshift(new Array(this.boardWidth));
+      this.score++;
     });
 
   }
