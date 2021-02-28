@@ -1,8 +1,4 @@
 <div>
-  <button (click)="restart()">start</button>
-  <span>Score: {{score}}</span>
-  <span>Game Over: {{gameOver}}</span>
-  {{tick$ | async}}
   <div class="board-grid">
     <div *ngFor="let y of board; let yIndex = index" class="row">
       <div *ngFor="let x of y; let xIndex = index" class="unit"
@@ -30,4 +26,16 @@
       </div>
     </div>
   </div>
+</div>
+<div>
+  <button (click)="joinGame()">Join</button>
+  <div class="player-list">
+    <div *ngFor="let player of activePlayers">
+      {{player}}
+    </div>
+  </div>
+  <button (click)="restart()">start</button>
+  <span>Score: {{score}}</span>
+  <span>Game Over: {{gameOver}}</span>
+  {{tick$ | async}}
 </div>

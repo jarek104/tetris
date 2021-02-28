@@ -1,4 +1,4 @@
-import { BlockModel, TetSequenceController } from './block-models';
+import { BlockModel, TetSequenceController, copyBlock } from './block-models';
 
 import { Component } from '@angular/core';
 import { KeyboardService } from './../../services/keyboard.service';
@@ -20,10 +20,13 @@ export class TetrisComponent {
   blockWidth = 20;
   blockHeight = 20;
   score = 0;
-  boardWidth = 8;
-  boardHeight = 10;
+  boardWidth = 10;
+  boardHeight = 20;
   board = [];
   gameOver = false;
+  activePlayers = ['Jerry'];
+
+  allPlayers = ['Kasia', 'Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola'];
 
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
@@ -31,8 +34,13 @@ export class TetrisComponent {
   tick$: Observable<any>
 
   ngOnInit() {
-    this.keyboardService.keyboardEvent$.subscribe(eventCode => this.handleKeyboardEvent(eventCode));
+    this.keyboardService.keyboardEvent$.subscribe(event => this.handleKeyboardEvent(event));
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
+  }
+
+  joinGame(username?: string) {
+    this.activePlayers.push(this.allPlayers.pop());
+    this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight, this.activePlayers.length);
   }
 
   getBackground(yIndex: number, xIndex: number, currentValue: string): string {
@@ -118,17 +126,31 @@ export class TetrisComponent {
       return;
     }
 
+    const copy = copyBlock(this.activeBlock);
+
     let currentSequenceInd = this.activeBlock.currentSequenceNumber;
-    this.activeBlock.boardPosition.forEach((unitPosition, index) => {
+    copy.boardPosition.forEach((unitPosition, index) => {
       let currentSequence = this.activeBlock.rotationSequence[currentSequenceInd];
       unitPosition[0] = unitPosition[0] + currentSequence[index][0];
       unitPosition[1] = unitPosition[1] + currentSequence[index][1];
     })
-    if (currentSequenceInd === this.activeBlock.rotationSequence.length -1) {
-      this.activeBlock.currentSequenceNumber = 0;
-    } else {
-      this.activeBlock.currentSequenceNumber++;
+
+    // this ensures the next move won't be outside of the board or on the occupied spot
+    const cantRotate = copy.boardPosition.some(unitPosition => {
+      return unitPosition[0] >= this.boardHeight ||
+            unitPosition[1] < 0 || unitPosition[1] >= this.boardWidth ||
+            this.board[unitPosition[0]][unitPosition[1]] !== undefined;
+    })
+
+    if(!cantRotate) {
+      this.activeBlock = copy;
+      if (currentSequenceInd === this.activeBlock.rotationSequence.length -1) {
+        this.activeBlock.currentSequenceNumber = 0;
+      } else {
+        this.activeBlock.currentSequenceNumber++;
+      }
     }
+
   }
 
   evaluateRows() {
@@ -159,8 +181,9 @@ export class TetrisComponent {
     })
   }
 
-  handleKeyboardEvent(code: string) {
-    switch (code) {
+  handleKeyboardEvent(event: KeyboardEvent) {
+    event.preventDefault();
+    switch (event.code) {
       case 'ArrowRight':
         this.moveRight();
         break;

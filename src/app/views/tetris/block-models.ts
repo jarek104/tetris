@@ -92,7 +92,7 @@ export const BLOCK_OPTIONS = [
   O, T, J, L, I, S, Z
 ]
 
-function copyBlock(block: BlockModel): BlockModel {
+export function copyBlock(block: BlockModel): BlockModel {
   return {
     color: block.color,
     active: block.active,

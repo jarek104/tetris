@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class KeyboardService {
 
-  keyboardEvent$ = new BehaviorSubject('');
+  keyboardEvent$ = new BehaviorSubject<KeyboardEvent>(new KeyboardEvent(''));
 
   constructor() { }
 }

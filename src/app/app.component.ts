@@ -24,7 +24,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.subscription = fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
-      this.keyboardService.keyboardEvent$.next(e.code);
+      this.keyboardService.keyboardEvent$.next(e);
     })
     // this.socketService.setupSocketConnection();
     // this.users$ = this.socketService.userCount$.asObservable();
