@@ -1,16 +1,140 @@
-:host {
+$grey_border: 1px solid #cacaca;
+$border_radius: 5px;
+$page_title: 'Orbitron', sans-serif;
+$digital: 'DotGothic16', sans-serif;
+$default_title: 'Russo One', sans-serif;
+$player_title: 'Orbitron', sans-serif;
+$quotation: 'Advent Pro', sans-serif;
+$font-color: #424242;
+
+* {
+  color: $font-color;
+}
+
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    display: flex;
+    font-size: 50px;
+    height: 100px;
+    font-family: $page_title;
+    color: $font-color;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
+  .content {
+    display: flex;
+
+    .board-wrapper {
+      display: flex;
+      flex-direction: column;
+
+      .board-grid {
+        height: auto;
+        width: auto;
+        border: $grey_border;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        border-radius: $border_radius;
+        overflow: hidden;
+      }
+
+      .game-counts,
+      .scores {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .metadata {
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .leaderboard-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .champion-wrapper {
+        padding: 16px;
+        box-sizing: border-box;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: $grey_border;
+        border-radius: $border_radius;
+
+        .highest-score-number {
+          font-size: 35px;
+        }
+
+        .highest-score-player {
+          font-family: $page_title;
+          font-size: 30px;
+        }
+
+        .highest-score-quote {
+          font-family: $quotation;
+          font-size: 20px;
+        }
+
+        .margin-top {
+          margin-top: 8px;
+        }
+      }
+
+      .game-code-wrapper {
+        padding: 16px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: $grey_border;
+        border-radius: $border_radius;
+
+        .code {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+
+.scores,
+.game-counts,
+.champion,
+.game-code-title,
+.leaderboard-title {
+  height: 24px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+  font-family: $default_title;
 }
 
-.board-grid {
-  height: auto;
-  width: auto;
-  border: 1px solid grey;
-  box-sizing: border-box;
+.controls {
   display: flex;
   flex-direction: column;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.digital {
+  font-family: $digital;
 }
 
 .unit {

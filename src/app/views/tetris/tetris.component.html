@@ -1,41 +1,70 @@
-<div>
-  <div class="board-grid">
-    <div *ngFor="let y of board; let yIndex = index" class="row">
-      <div *ngFor="let x of y; let xIndex = index" class="unit"
-        [style.backgroundColor]="getBackground(yIndex, xIndex, x)"
-        [style.width.px]="blockWidth"
-        [style.height.px]="blockHeight"
-      ></div>
+<!-- <div class="controls">
+  <div class="block-control-unit">
+    <div>Block Width</div>
+    <div>
+      <button (click)="increaseWidth()">+</button>
+      <span>{{blockWidth}}px</span>
+      <button (click)="decreaseWidth()">-</button>
     </div>
   </div>
-  <div class="block-controls">
-    <div class="block-control-unit">
-      <div>Block Width</div>
-      <div>
-        <button (click)="increaseWidth()">+</button>
-        <span>{{blockWidth}}px</span>
-        <button (click)="decreaseWidth()">-</button>
+  <div class="block-control-unit">
+    <div>Block Height</div>
+    <div>
+      <button (click)="increaseHeight()">+</button>
+      <span>{{blockHeight}}px</span>
+      <button (click)="decreaseHeight()">-</button>
+    </div>
+  </div>
+</div> -->
+
+<div class="wrapper">
+
+  <div class="title">{{ gameOver ? 'Game Over' : 'ngTetris' }}</div>
+
+
+  <div class="content">
+    <div class="board-wrapper">
+
+      <div class="scores">
+        <span>Score: <span class="digital">{{score}}</span></span>
+        <span>Level: <span class="digital">{{speedLevel$ | async}}</span></span>
+      </div>
+
+      <div class="board-grid">
+        <div *ngFor="let y of board; let yIndex = index" class="row">
+          <div *ngFor="let x of y; let xIndex = index" class="unit"
+            [style.backgroundColor]="getBackground(yIndex, xIndex, x)"
+            [style.width.px]="blockWidth"
+            [style.height.px]="blockHeight"
+          ></div>
+        </div>
+      </div>
+      <div class="game-counts">
+        <div>Blocks: <span class="digital">{{blocksCount}}</span></div>
+        <div>Time: <span class="digital">{{timer$ | async}}</span></div>
       </div>
     </div>
-    <div class="block-control-unit">
-      <div>Block Height</div>
-      <div>
-        <button (click)="increaseHeight()">+</button>
-        <span>{{blockHeight}}px</span>
-        <button (click)="decreaseHeight()">-</button>
+
+    <div class="metadata">
+      <div class="leaderboard-wrapper">
+        <div class="leaderboard-title"></div>
+        <div class="champion-wrapper">
+          <div class="champion">Champion</div>
+          <div class="highest-score-number margin-top digital">187</div>
+          <div class="highest-score-player margin-top">Jerry O</div>
+          <div class="highest-score-quote margin-top">"{{quote}}"</div>
+        </div>
       </div>
+      <div style="margin-bottom: 24px;" *ngIf="!(timer$ | async)">
+        <div class="game-code-wrapper">
+          <div class="game-code-title">Your Game Code</div>
+          <div class="digital code">XKYG</div>
+        </div>
+        <button mat-stroked-button color="primary" (click)="startGame()" style="width: 100%;">Start</button>
+      </div>
+
     </div>
   </div>
-</div>
-<div>
-  <button (click)="joinGame()">Join</button>
-  <div class="player-list">
-    <div *ngFor="let player of activePlayers">
-      {{player}}
-    </div>
-  </div>
-  <button (click)="restart()">start</button>
-  <span>Score: {{score}}</span>
-  <span>Game Over: {{gameOver}}</span>
-  {{tick$ | async}}
+
+
 </div>

@@ -1,8 +1,8 @@
 import { BlockModel, TetSequenceController, copyBlock } from './block-models';
+import { Observable, of } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { KeyboardService } from './../../services/keyboard.service';
-import { Observable } from 'rxjs';
 import { TetrisService } from './../../services/tetris.service';
 
 @Component({
@@ -17,25 +17,33 @@ export class TetrisComponent {
     private keyboardService: KeyboardService,
   ) { }
 
-  blockWidth = 20;
-  blockHeight = 20;
+  blockWidth = 25;
+  blockHeight = 25;
   score = 0;
+  blocksCount = 1;
   boardWidth = 10;
   boardHeight = 20;
   board = [];
   gameOver = false;
   activePlayers = ['Jerry'];
 
-  allPlayers = ['Kasia', 'Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola'];
+  allPlayers = ['Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola', 'Kasia'];
 
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
 
-  tick$: Observable<any>
+  tick$: Observable<any>;
+  timer$: Observable<number>;
+  speedLevel$: Observable<number>;
+
+  quote = "Thanos did nothing wrong."
 
   ngOnInit() {
     this.keyboardService.keyboardEvent$.subscribe(event => this.handleKeyboardEvent(event));
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
+    this.tick$ = this.tetrisService.tick$;
+    this.timer$ = this.tetrisService.timer$;
+    this.speedLevel$ = this.tetrisService.speedLevel$;
   }
 
   joinGame(username?: string) {
@@ -72,6 +80,7 @@ export class TetrisComponent {
       this.evaluateRows();
 
       this.activeBlock = this.sequenceController.next();
+      this.blocksCount++;
       this.gameOver = this.isGameOver(this.activeBlock)
 
     } else if (!this.gameOver) {
@@ -83,7 +92,11 @@ export class TetrisComponent {
 
   isGameOver(block: BlockModel) {
     return block.boardPosition.some(unit => {
-      return this.board[unit[0]][unit[1]];
+      let isOver = this.board[unit[0]][unit[1]];
+      if (isOver) {
+        this.tetrisService.stopTimer();
+      }
+      return isOver;
     });
   }
 
@@ -169,9 +182,8 @@ export class TetrisComponent {
 
   }
 
-  restart() {
+  startGame() {
     this.tetrisService.restart();
-    this.tick$ = this.tetrisService.tick$;
     this.tick$.subscribe(_ => this.moveDown())
   }
 
