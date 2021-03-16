@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subscription, interval, of } from 'rxjs';
+import { BehaviorSubject, Subscription, interval } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -31,7 +31,7 @@ export class TetrisService {
 
   increaseSpeed() {
     this.sub.unsubscribe();
-    this.speed = Math.round(this.speed * .75);
+    this.speed = Math.round(this.speed * .9);
     this.sub = interval(this.speed).subscribe(_ => this.tick$.next(this.tick$.value + 1));
 
   }
