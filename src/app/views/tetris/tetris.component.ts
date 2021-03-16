@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
 import { KeyboardService } from './../../services/keyboard.service';
 import { TetrisService } from './../../services/tetris.service';
 
+const SCORE_LEVEL_MULTIPLIER = .8;
+
 @Component({
   selector: 'app-tetris',
   templateUrl: './tetris.component.html',
@@ -20,6 +22,7 @@ export class TetrisComponent {
   blockWidth = 25;
   blockHeight = 25;
   score = 0;
+  scoreLevelMultiplayer = 1;
   blocksCount = 1;
   boardWidth = 10;
   boardHeight = 20;
@@ -36,14 +39,19 @@ export class TetrisComponent {
   timer$: Observable<number>;
   speedLevel$: Observable<number>;
 
-  quote = "Thanos did nothing wrong."
+  quote = "SMH my head."
 
   ngOnInit() {
     this.keyboardService.keyboardEvent$.subscribe(event => this.handleKeyboardEvent(event));
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
     this.tick$ = this.tetrisService.tick$;
+    this.tick$.subscribe(_ => this.moveDown())
     this.timer$ = this.tetrisService.timer$;
     this.speedLevel$ = this.tetrisService.speedLevel$;
+    this.speedLevel$.subscribe(lvl => {
+      this.scoreLevelMultiplayer = lvl === 1 ? 1 : lvl * SCORE_LEVEL_MULTIPLIER;
+      console.log(this.scoreLevelMultiplayer);
+    })
   }
 
   joinGame(username?: string) {
@@ -173,18 +181,37 @@ export class TetrisComponent {
       if (!rowNotReady) {
         rowIndexesToRemove.push(index);
       }
-    })
+    });
+    this.updateScore(rowIndexesToRemove.length);
     rowIndexesToRemove.forEach(index => {
       this.board.splice(index, 1);
       this.board.unshift(new Array(this.boardWidth));
-      this.score++;
     });
 
   }
 
   startGame() {
     this.tetrisService.restart();
-    this.tick$.subscribe(_ => this.moveDown())
+  }
+
+  updateScore(rowsCount: number) {
+    switch (rowsCount) {
+      case 1:
+        this.score+= 100 * this.scoreLevelMultiplayer;
+        break;
+      case 2:
+        this.score+= 300 * this.scoreLevelMultiplayer;
+        break;
+      case 3:
+        this.score+= 500 * this.scoreLevelMultiplayer;
+        break;
+      case 4:
+        this.score+= 500 * this.scoreLevelMultiplayer;
+        break;
+
+      default:
+        break;
+    }
   }
 
   archiveBlock(block: BlockModel) {

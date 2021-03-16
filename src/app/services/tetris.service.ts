@@ -2,6 +2,9 @@ import { BehaviorSubject, Subscription, interval } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
+const SPEED_INCREASE_MULTIPLIER = .9;
+const SPEED_INCREASE_FREQUENCY = 30;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +12,7 @@ export class TetrisService {
 
   constructor() {
     this.timer$.subscribe(time => {
-      if (time === this.speedLevel$.value * 30) {
+      if (time === this.speedLevel$.value * SPEED_INCREASE_FREQUENCY) {
         this.increaseSpeed();
         this.speedLevel$.next(this.speedLevel$.value + 1);
       }
@@ -31,7 +34,7 @@ export class TetrisService {
 
   increaseSpeed() {
     this.sub.unsubscribe();
-    this.speed = Math.round(this.speed * .9);
+    this.speed = Math.round(this.speed * SPEED_INCREASE_MULTIPLIER);
     this.sub = interval(this.speed).subscribe(_ => this.tick$.next(this.tick$.value + 1));
 
   }
