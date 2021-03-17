@@ -67,7 +67,7 @@ $font-color: #424242;
       .champion-wrapper {
         padding: 16px;
         box-sizing: border-box;
-        width: 200px;
+        width: 300px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -75,12 +75,13 @@ $font-color: #424242;
         border-radius: $border_radius;
 
         .highest-score-number {
-          font-size: 35px;
+          font-size: 30px;
         }
 
         .highest-score-player {
           font-family: $page_title;
-          font-size: 30px;
+          font-size: 24px;
+          text-align: center;
         }
 
         .highest-score-quote {
@@ -97,7 +98,7 @@ $font-color: #424242;
         padding: 16px;
         margin-bottom: 24px;
         box-sizing: border-box;
-        width: 200px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -139,7 +140,7 @@ $font-color: #424242;
 
 .unit {
   box-sizing: border-box;
-  border: 1px solid white;
+  border: 1px solid #f9f9f9;;
 }
 
 .row {

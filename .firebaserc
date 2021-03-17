@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ngtetris-53106": {
+      "hosting": {
+        "happy-hour-gaming-frontend": [
+          "ngtetris-53106"
+        ]
+      }
+    }
+  }
+}

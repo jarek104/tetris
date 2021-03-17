@@ -1,0 +1,16 @@
+<h3 mat-dialog-title style="text-align: center;">You are in the top 10!</h3>
+<div mat-dialog-content>
+  <p>Do you want to save your score?</p>
+  <mat-form-field style="width: 100%;">
+    <mat-label>Player Name</mat-label>
+    <input matInput [(ngModel)]="data.playerName" maxlength="20">
+  </mat-form-field>
+  <mat-form-field style="width: 100%;">
+    <mat-label>Quote</mat-label>
+    <textarea matInput (ngModelChange)="onQuoteChange($event)" [(ngModel)]="data.quote" maxlength="160"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: center;">
+  <button mat-button (click)="onClick()">No Thanks</button>
+  <button mat-button cdkFocusInitial (click)="onClick()" color="primary">Yes</button>
+</div>

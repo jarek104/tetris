@@ -44,15 +44,14 @@
         <div>Time: <span class="digital">{{timer$ | async}}</span></div>
       </div>
     </div>
-
     <div class="metadata">
       <div class="leaderboard-wrapper">
         <div class="leaderboard-title"></div>
-        <div class="champion-wrapper">
+        <div class="champion-wrapper" *ngIf="leaderboard">
           <div class="champion">Champion</div>
-          <div class="highest-score-number margin-top digital">38460</div>
-          <div class="highest-score-player margin-top">Jerry O</div>
-          <div class="highest-score-quote margin-top">"{{quote}}"</div>
+          <div class="highest-score-number margin-top digital">{{ leaderboard[0]?.score }}</div>
+          <div class="highest-score-player margin-top">{{ leaderboard[0]?.playerName ? leaderboard[0]?.playerName : 'Anonymous' }}</div>
+          <div class="highest-score-quote margin-top" *ngIf="leaderboard[0]?.quote">"{{ leaderboard[0]?.quote }}"</div>
         </div>
       </div>
       <div style="margin-bottom: 24px;" *ngIf="!(timer$ | async)">

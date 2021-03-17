@@ -1,8 +1,11 @@
 import { BlockModel, TetSequenceController, copyBlock } from './block-models';
+import { FirebaseService, GameScore } from 'src/app/services/firebase.service';
 import { Observable, of } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { KeyboardService } from './../../services/keyboard.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SaveScoreDialog } from 'src/app/shared/save-score-dialog.component';
 import { TetrisService } from './../../services/tetris.service';
 
 const SCORE_LEVEL_MULTIPLIER = .8;
@@ -17,8 +20,16 @@ export class TetrisComponent {
   constructor(
     private tetrisService: TetrisService,
     private keyboardService: KeyboardService,
-  ) { }
+    private firebabe: FirebaseService,
+    public dialog: MatDialog,
+  ) {
+    this.firebabe.getTetrisLeaderboard().subscribe(data => {
+      console.log('Top 10:', data);
+      this.leaderboard = data;
+    })
+  }
 
+  leaderboard = [];
   blockWidth = 25;
   blockHeight = 25;
   scoreLevelMultiplayer = 1;
@@ -40,6 +51,7 @@ export class TetrisComponent {
   speedLevel$: Observable<number>;
 
   quote = "SMH my head."
+  topTenScores = [];
 
   ngOnInit() {
     this.keyboardService.keyboardEvent$.subscribe(event => this.handleKeyboardEvent(event));
@@ -88,7 +100,9 @@ export class TetrisComponent {
       this.activeBlock = this.sequenceController.next();
       this.blocksCount++;
       this.gameOver = this.isGameOver(this.activeBlock)
-
+      if (this.gameOver) {
+        this.evaluateSavingScore();
+      }
     } else if (!this.gameOver) {
       this.activeBlock.boardPosition.forEach(unit => {
         unit[0]++;
@@ -192,6 +206,25 @@ export class TetrisComponent {
     this.tetrisService.restart();
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SaveScoreDialog, {
+      width: '350px',
+      data: {score: this.score, level: this.tetrisService.speedLevel$.value}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.firebabe.saveScore(result);
+    });
+  }
+
+  evaluateSavingScore() {
+    if (this.score > 0) {
+      const isTopTen = this.score > this.leaderboard[this.leaderboard.length - 1].score;
+      isTopTen || this.leaderboard.length < 10 ? this.openDialog() : this.firebabe.saveScore({score: this.score, level: this.tetrisService.speedLevel$.value});
+    }
+  }
+
+
   updateScore(rowsCount: number) {
     switch (rowsCount) {
       case 1:
@@ -219,18 +252,21 @@ export class TetrisComponent {
   }
 
   handleKeyboardEvent(event: KeyboardEvent) {
-    event.preventDefault();
     switch (event.code) {
       case 'ArrowRight':
+        event.preventDefault();
         this.moveRight();
         break;
       case 'ArrowLeft':
+        event.preventDefault();
         this.moveLeft();
         break;
       case 'ArrowDown':
+        event.preventDefault();
         this.moveDown();
         break;
       case 'ArrowUp':
+        event.preventDefault();
         this.rotate();
         break;
       case 'Space':
