@@ -21,21 +21,21 @@ export class TetrisComponent {
 
   blockWidth = 25;
   blockHeight = 25;
-  score = 0;
   scoreLevelMultiplayer = 1;
-  blocksCount = 1;
   boardWidth = 10;
   boardHeight = 20;
   board = [];
   gameOver = false;
-  activePlayers = ['Jerry'];
 
+  activePlayers = ['Jerry'];
   allPlayers = ['Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola', 'Kasia'];
 
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
 
-  tick$: Observable<any>;
+  // Displayed in UI
+  score = 0;
+  blocksCount = 1;
   timer$: Observable<number>;
   speedLevel$: Observable<number>;
 
@@ -44,13 +44,11 @@ export class TetrisComponent {
   ngOnInit() {
     this.keyboardService.keyboardEvent$.subscribe(event => this.handleKeyboardEvent(event));
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
-    this.tick$ = this.tetrisService.tick$;
-    this.tick$.subscribe(_ => this.moveDown())
+    this.tetrisService.tick$.subscribe(_ => this.moveDown())
     this.timer$ = this.tetrisService.timer$;
     this.speedLevel$ = this.tetrisService.speedLevel$;
     this.speedLevel$.subscribe(lvl => {
       this.scoreLevelMultiplayer = lvl === 1 ? 1 : lvl * SCORE_LEVEL_MULTIPLIER;
-      console.log(this.scoreLevelMultiplayer);
     })
   }
 
@@ -206,7 +204,7 @@ export class TetrisComponent {
         this.score+= 500 * this.scoreLevelMultiplayer;
         break;
       case 4:
-        this.score+= 500 * this.scoreLevelMultiplayer;
+        this.score+= 800 * this.scoreLevelMultiplayer;
         break;
 
       default:
