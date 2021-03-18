@@ -7,7 +7,7 @@ export interface BlockModel {
 }
 
 const O: BlockModel = {
-  color: '#F4F1DE',
+  color: '#70C1B3',
   active: true,
   boardPosition: [[0, 4], [0, 5], [1, 4], [1, 5]],
   rotationSequence: [
@@ -17,7 +17,7 @@ const O: BlockModel = {
 }
 
 const T: BlockModel = {
-  color: '#E07A5F',
+  color: '#50514F',
   active: true,
   boardPosition: [[0, 4], [1, 3], [1, 4], [1, 5]],
   rotationSequence: [
@@ -30,7 +30,7 @@ const T: BlockModel = {
 }
 
 const J: BlockModel = {
-  color: '#3D405B',
+  color: '#A15856',
   active: true,
   boardPosition: [[0, 4], [1, 4], [2, 3], [2, 4]],
   rotationSequence: [
@@ -43,7 +43,7 @@ const J: BlockModel = {
 }
 
 const L: BlockModel = {
-  color: '#3D405B',
+  color: '#F25F5C',
   active: true,
   boardPosition: [[0, 4], [1, 4], [2, 4], [2, 5]],
   rotationSequence: [
@@ -56,7 +56,7 @@ const L: BlockModel = {
 }
 
 const S: BlockModel = {
-  color: '#81B29A',
+  color: '#F9A061',
   active: true,
   boardPosition: [[0, 4], [1, 4], [1, 5], [2, 5]],
   rotationSequence: [
@@ -67,7 +67,7 @@ const S: BlockModel = {
 }
 
 const Z: BlockModel = {
-  color: '#81B29A',
+  color: '#ecd474',
   active: true,
   boardPosition: [[0, 5], [1, 5], [1, 4], [2, 4]],
   rotationSequence: [
@@ -78,7 +78,7 @@ const Z: BlockModel = {
 }
 
 const I: BlockModel = {
-  color: '#F2CC8F',
+  color: '#247BA0',
   active: true,
   boardPosition: [[0, 4], [1, 4], [2, 4], [3, 4]],
   rotationSequence: [

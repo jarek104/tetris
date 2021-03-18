@@ -38,6 +38,9 @@ export class TetrisComponent {
   board = [];
   gameOver = false;
 
+  colors = ['#4b6786', '#fb7c85', '#5d9b84', '#47424c', '#fed295', '#a29f9f', '#68c7c1', '#ad6052', '#a685cc', '#ff9840']
+  colors2 = ['#50514F', '#A15856', '#F25F5C', '#F9A061', '#ecd474', '#247BA0', '#70C1B3']
+
   activePlayers = ['Jerry'];
   allPlayers = ['Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola', 'Kasia'];
 
