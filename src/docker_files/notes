@@ -1,0 +1,9 @@
+in order to make a full stack app deployable to the cloud you need to:
+1. create images using Dockerfile
+2. tag images and upload them to the Docker hub
+3. create a docker-compose.yml that will bundle front and backend together
+
+docker build -t ngtetris-frontent .  ---- build an image from Dockerfile in current directory
+docker images - lists all images
+docker tag ae7 jarek104/ngtetris-frontend:mvp -- tags the image as mvp
+docker push jarek104/ngtetris-frontend:mvp -- pushes to docker hub
