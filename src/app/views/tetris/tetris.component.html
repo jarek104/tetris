@@ -33,7 +33,7 @@
 
       <div class="scores">
         <span>Score: <span class="digital">{{score}}</span></span>
-        <span>Level: <span class="digital">{{speedLevel$ | async}}</span></span>
+        <span>Level: <span class="digital" [class.indication]="shouldIndicate$ | async">{{speedLevel$ | async}}</span></span>
       </div>
 
       <div class="board-grid">
@@ -54,17 +54,26 @@
       <div class="leaderboard-wrapper">
         <div class="leaderboard-title"></div>
         <div class="champion-wrapper" *ngIf="leaderboard">
-          <div class="champion">Champion</div>
-          <div class="highest-score-number margin-top digital">{{ leaderboard[0]?.score }}</div>
-          <div class="highest-score-player margin-top">{{ leaderboard[0]?.playerName ? leaderboard[0]?.playerName : 'Anonymous' }}</div>
-          <div class="highest-score-quote margin-top" *ngIf="leaderboard[0]?.quote">"{{ leaderboard[0]?.quote }}"</div>
+
+          <div class="champion">
+            <button mat-icon-button (click)="onPreviousPlace()" [class.hide-arrow]="currentPlaceDisplayed === 0">
+              <mat-icon>navigate_before</mat-icon>
+            </button>
+            <span>{{currentPlaceDisplayed === 0 ? "Champion" : (currentPlaceDisplayed + 1) | ordinal}}</span>
+            <button mat-icon-button (click)="onNextPlace()" [class.hide-arrow]="currentPlaceDisplayed === 9">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div>
+          <div class="highest-score-number margin-top digital">{{ leaderboard[currentPlaceDisplayed]?.score }}</div>
+          <div class="highest-score-player margin-top">{{ leaderboard[currentPlaceDisplayed]?.playerName ? leaderboard[currentPlaceDisplayed]?.playerName : 'Anonymous' }}</div>
+          <div class="highest-score-quote margin-top" *ngIf="leaderboard[currentPlaceDisplayed]?.quote">"{{ leaderboard[currentPlaceDisplayed]?.quote }}"</div>
         </div>
       </div>
       <div style="margin-bottom: 24px;" *ngIf="!(timer$ | async)">
-        <div class="game-code-wrapper">
+        <!-- <div class="game-code-wrapper">
           <div class="game-code-title">Your Game Code</div>
           <div class="digital code">XKYG</div>
-        </div>
+        </div> -->
         <button mat-stroked-button color="primary" (click)="startGame()" style="width: 100%;">Start</button>
       </div>
 

@@ -37,6 +37,7 @@ export class TetrisComponent {
   boardHeight = 20;
   board = [];
   gameOver = false;
+  currentPlaceDisplayed = 0;
 
   colors = ['#4b6786', '#fb7c85', '#5d9b84', '#47424c', '#fed295', '#a29f9f', '#68c7c1', '#ad6052', '#a685cc', '#ff9840']
   colors2 = ['#50514F', '#A15856', '#F25F5C', '#F9A061', '#ecd474', '#247BA0', '#70C1B3']
@@ -52,6 +53,7 @@ export class TetrisComponent {
   blocksCount = 1;
   timer$: Observable<number>;
   speedLevel$: Observable<number>;
+  shouldIndicate$: Observable<boolean>;
 
   quote = "SMH my head."
   topTenScores = [];
@@ -61,6 +63,7 @@ export class TetrisComponent {
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
     this.tetrisService.tick$.subscribe(_ => this.moveDown())
     this.timer$ = this.tetrisService.timer$;
+    this.shouldIndicate$ = this.tetrisService.levelIncreaseIndicator$;
     this.speedLevel$ = this.tetrisService.speedLevel$;
     this.speedLevel$.subscribe(lvl => {
       this.scoreLevelMultiplayer = lvl === 1 ? 1 : lvl * SCORE_LEVEL_MULTIPLIER;
@@ -86,6 +89,18 @@ export class TetrisComponent {
     }
   }
 
+  onPreviousPlace() {
+    if (this.currentPlaceDisplayed > 0) {
+      this.currentPlaceDisplayed--;
+    }
+  }
+
+  onNextPlace() {
+    if (this.currentPlaceDisplayed < 9) {
+      this.currentPlaceDisplayed++;
+    }
+  }
+
   moveDown() {
     const cantMove = this.activeBlock.boardPosition.some(unitPosition => {
       let isProhibited = unitPosition[0] === this.boardHeight - 1;
@@ -106,7 +121,7 @@ export class TetrisComponent {
       if (this.gameOver) {
         this.evaluateSavingScore();
       }
-    } else if (!this.gameOver) {
+    } else if (!this.gameOver && this.tetrisService.timer$.value > 0) {
       this.activeBlock.boardPosition.forEach(unit => {
         unit[0]++;
       })
@@ -130,7 +145,7 @@ export class TetrisComponent {
         let nextMoveIndex = unitPosition[1] + 1;
         isProhibited = this.board[unitPosition[0]][nextMoveIndex] !== undefined;
       }
-      return isProhibited;
+      return isProhibited || this.tetrisService.timer$.value === 0;;
     })
     if (cantMove || this.gameOver) {
       return;
@@ -147,7 +162,7 @@ export class TetrisComponent {
         let nextMoveIndex = unitPosition[1] - 1;
         isProhibited = this.board[unitPosition[0]][nextMoveIndex] !== undefined;
       }
-      return isProhibited;
+      return isProhibited || this.tetrisService.timer$.value === 0;
     })
     if (cantMove || this.gameOver) {
       return;
@@ -158,7 +173,7 @@ export class TetrisComponent {
   }
 
   rotate() {
-    if (this.gameOver) {
+    if (this.gameOver || this.tetrisService.timer$.value === 0) {
       return;
     }
 
@@ -229,23 +244,25 @@ export class TetrisComponent {
 
 
   updateScore(rowsCount: number) {
+    let temp = this.score;
     switch (rowsCount) {
       case 1:
-        this.score+= 100 * this.scoreLevelMultiplayer;
+        temp+= 100 * this.scoreLevelMultiplayer;
         break;
       case 2:
-        this.score+= 300 * this.scoreLevelMultiplayer;
+        temp+= 300 * this.scoreLevelMultiplayer;
         break;
       case 3:
-        this.score+= 500 * this.scoreLevelMultiplayer;
+        temp+= 500 * this.scoreLevelMultiplayer;
         break;
       case 4:
-        this.score+= 800 * this.scoreLevelMultiplayer;
+        temp+= 800 * this.scoreLevelMultiplayer;
         break;
 
       default:
         break;
     }
+    this.score = Math.round(temp);
   }
 
   archiveBlock(block: BlockModel) {

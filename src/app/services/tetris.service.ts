@@ -12,6 +12,7 @@ export class TetrisService {
 
   constructor() {
     this.timer$.subscribe(time => {
+      this.levelIncreaseIndicator$.next(time % SPEED_INCREASE_FREQUENCY === 0 && time !== 0);
       if (time === this.speedLevel$.value * SPEED_INCREASE_FREQUENCY) {
         this.increaseSpeed();
         this.speedLevel$.next(this.speedLevel$.value + 1);
@@ -23,6 +24,7 @@ export class TetrisService {
   tick$ = new BehaviorSubject<number>(0);
   timer$ = new BehaviorSubject<number>(0);
   speed = 1000;
+  levelIncreaseIndicator$ = new BehaviorSubject<boolean>(false);
 
   sub = new Subscription();
   timerSub = new Subscription();

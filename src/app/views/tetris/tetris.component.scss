@@ -74,6 +74,20 @@ $font-color: #424242;
         border: $grey_border;
         border-radius: $border_radius;
 
+        .champion {
+          height: 24px;
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+          font-family: $default_title;
+
+          .hide-arrow {
+            visibility: hidden;
+          }
+        }
+
         .highest-score-number {
           font-size: 30px;
         }
@@ -115,7 +129,6 @@ $font-color: #424242;
 
 .scores,
 .game-counts,
-.champion,
 .game-code-title,
 .leaderboard-title {
   height: 24px;
@@ -167,4 +180,9 @@ $font-color: #424242;
 .player-list {
   display: flex;
   flex-direction: column;
+}
+
+.indication {
+  color: red;
+  font-weight: bold;
 }
