@@ -1,32 +1,6 @@
-<!-- <div class="controls">
-  <div class="block-control-unit">
-    <div>Block Width</div>
-    <div>
-      <button (click)="increaseWidth()">+</button>
-      <span>{{blockWidth}}px</span>
-      <button (click)="decreaseWidth()">-</button>
-    </div>
-  </div>
-  <div class="block-control-unit">
-    <div>Block Height</div>
-    <div>
-      <button (click)="increaseHeight()">+</button>
-      <span>{{blockHeight}}px</span>
-      <button (click)="decreaseHeight()">-</button>
-    </div>
-  </div>
-</div> -->
-<!-- <div style="display: flex; flex-wrap: wrap; height: 400px; width: 400px">
-  <div *ngFor="let color of colors" style="width: 100px; height: 100px" [style.backgroundColor]="color"></div>
-</div>
-<div style="display: flex; flex-wrap: wrap; height: 400px; width: 400px">
-  <div *ngFor="let color of colors2" style="width: 100px; height: 100px" [style.backgroundColor]="color"></div>
-</div> -->
-
 <div class="wrapper">
 
   <div class="title">{{ gameOver ? 'Game Over' : 'ngTetris' }}</div>
-
 
   <div class="content">
     <div class="board-wrapper">
@@ -70,15 +44,10 @@
         </div>
       </div>
       <div style="margin-bottom: 24px;" *ngIf="!(timer$ | async)">
-        <!-- <div class="game-code-wrapper">
-          <div class="game-code-title">Your Game Code</div>
-          <div class="digital code">XKYG</div>
-        </div> -->
         <button mat-stroked-button color="primary" (click)="startGame()" style="width: 100%;">Start</button>
       </div>
 
     </div>
   </div>
-
 
 </div>
