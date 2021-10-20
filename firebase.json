@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist/happy-hour-gaming-frontend",
     "ignore": [
       "firebase.json",
       "**/.*",
