@@ -7,7 +7,7 @@
 
       <div class="scores">
         <span>Score: <span class="digital">{{score}}</span></span>
-        <span>Level: <span class="digital" [class.indication]="shouldIndicate$ | async">{{speedLevel$ | async}}</span></span>
+        <span>Level: <span class="digital" [class.indication]="shouldIndicateLevelBump$ | async">{{speedLevel$ | async}}</span></span>
       </div>
 
       <div class="board-grid">

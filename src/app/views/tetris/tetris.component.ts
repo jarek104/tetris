@@ -1,12 +1,12 @@
-import { BlockModel, TetSequenceController, copyBlock } from './block-models';
-import { FirebaseService, GameScore } from 'src/app/services/firebase.service';
-import { Observable, of } from 'rxjs';
-
-import { Component } from '@angular/core';
-import { KeyboardService } from './../../services/keyboard.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { BlockModel, TetSequenceController, copyBlock } from './block-models';
+import { FirebaseService } from '../../services/firebase.service';
+import { KeyboardService } from '../../services/keyboard.service';
+import { TetrisService } from '../../services/tetris.service';
 import { SaveScoreDialog } from 'src/app/shared/save-score-dialog.component';
-import { TetrisService } from './../../services/tetris.service';
 
 const SCORE_LEVEL_MULTIPLIER = .8;
 
@@ -22,12 +22,7 @@ export class TetrisComponent {
     private keyboardService: KeyboardService,
     private firebabe: FirebaseService,
     public dialog: MatDialog,
-  ) {
-    this.firebabe.getTetrisLeaderboard().subscribe(data => {
-      console.log('Top 10:', data);
-      this.leaderboard = data;
-    })
-  }
+  ) { }
 
   leaderboard = [];
   blockWidth = 25;
@@ -39,12 +34,6 @@ export class TetrisComponent {
   gameOver = false;
   currentPlaceDisplayed = 0;
 
-  colors = ['#4b6786', '#fb7c85', '#5d9b84', '#47424c', '#fed295', '#a29f9f', '#68c7c1', '#ad6052', '#a685cc', '#ff9840']
-  colors2 = ['#50514F', '#A15856', '#F25F5C', '#F9A061', '#ecd474', '#247BA0', '#70C1B3']
-
-  activePlayers = ['Jerry'];
-  allPlayers = ['Boris', 'Jelena', 'Marcin', 'Ewa', 'Michal', 'Ola', 'Kasia'];
-
   sequenceController = new TetSequenceController();
   activeBlock = this.sequenceController.next();
 
@@ -53,9 +42,7 @@ export class TetrisComponent {
   blocksCount = 1;
   timer$: Observable<number>;
   speedLevel$: Observable<number>;
-  shouldIndicate$: Observable<boolean>;
-
-  quote = "SMH my head."
+  shouldIndicateLevelBump$: Observable<boolean>;
   topTenScores = [];
 
   ngOnInit() {
@@ -63,16 +50,15 @@ export class TetrisComponent {
     this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight);
     this.tetrisService.tick$.subscribe(_ => this.moveDown())
     this.timer$ = this.tetrisService.timer$;
-    this.shouldIndicate$ = this.tetrisService.levelIncreaseIndicator$;
+    this.shouldIndicateLevelBump$ = this.tetrisService.levelIncreaseIndicator$;
     this.speedLevel$ = this.tetrisService.speedLevel$;
     this.speedLevel$.subscribe(lvl => {
       this.scoreLevelMultiplayer = lvl === 1 ? 1 : lvl * SCORE_LEVEL_MULTIPLIER;
     })
-  }
-
-  joinGame(username?: string) {
-    this.activePlayers.push(this.allPlayers.pop());
-    this.board = this.tetrisService.buildBoard(this.boardWidth, this.boardHeight, this.activePlayers.length);
+    this.firebabe.getTetrisLeaderboard().subscribe(data => {
+      console.log('Top 10:', data);
+      this.leaderboard = data;
+    })
   }
 
   getBackground(yIndex: number, xIndex: number, currentValue: string): string {
